@@ -1,0 +1,21 @@
+-Instalar todo
+    npm install aws-sdk aws-lambda
+    npm install -D  typescript serverless serverless-offline serverless-plugin-typescript @types/node @types/aws-lambda"
+
+-Crear credenciales
+
+-Incluir Crendenciales
+    serverless config credentials -o --provider provider --key key --secret secret
+    serverless config credentials -o  --provider aws --key AKIATLJXCAROLC62SHZ4 --secret 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
+
+-Objeto para incluir 
+    {
+        "seed#content": "hogar#product",
+        "detail": "h0001",
+        "productdetail": {
+            "stock": 40,
+            "title": "martillo",
+            "description" : "Sirve para martillar",
+            "img": "https://www.shutterstock.com/image-vector/url-shortener-use-scissors-address-260nw-2210269047.jpg"
+        }
+    }

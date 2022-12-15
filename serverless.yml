@@ -1,0 +1,74 @@
+service: ecosistema
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  environment:
+        tableName: ecoproducts
+        imageBucket: ecoimage
+        region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+            - s3:*
+            - ses:*
+          Resource: '*'
+
+custom:
+  tableName: ecoproducts
+  bucketName: ecoimage
+
+functions:
+  state:
+    handler: src/app.state
+    events:
+      - httpApi: GET /state
+  creatproduct:
+    handler: src/app.createProduct
+    events:
+      - httpApi: POST /createProduct
+  getcontent:
+    handler: src/app.getseed
+    events:
+      - httpApi: GET /getseed
+  updateproduct:
+    handler: src/app.updateProduct
+    events:
+      - httpApi: PUT /updateProduct
+  deleteproduct:
+    handler: src/app.deleteProduct
+    events:
+      - httpApi: DELETE /deleteProduct
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+
+resources:
+    Resources:
+        ImageBucket:
+            Type: AWS::S3::Bucket
+            Properties:
+                BucketName: ecoimage
+        DynamoDbTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ecoproducts
+                ProvisionedThroughput:
+                  ReadCapacityUnits: 5
+                  WriteCapacityUnits: 5
+                AttributeDefinitions:
+                    - AttributeName: seed#content
+                      AttributeType: S
+                    - AttributeName: detail
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: seed#content
+                      KeyType: HASH
+                    - AttributeName: detail
+                      KeyType: RANGE
+                
